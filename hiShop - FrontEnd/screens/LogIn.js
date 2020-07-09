@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Text, StyleSheet, Dimensions, ScrollView, Animated, Keyboard, KeyboardAvoidingView, Platform, StatusBar, Easing } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Dimensions, ScrollView, Animated, Keyboard, KeyboardAvoidingView, Platform, StatusBar, Easing } from 'react-native';
 import RoundedTextInput from '../components/RoundedTextInput'
 import ButtonGradient from '../components/ButtonGradient';
 import Colors from '../constants/Colors';
 const window = Dimensions.get('window');
 
-export const IMAGE_HEIGHT = window.width / 2;
+const IMAGE_HEIGHT = window.width / 2;
 
 export default class LogIn extends Component {
     constructor(props) {
@@ -25,7 +25,7 @@ export default class LogIn extends Component {
     keyboardWillShow = (event) => {
         Animated.timing(this.imageHeight, {
             duration: event.duration,
-            toValue: 0.8,
+            toValue: 0.7,
             easing: Easing.linear,
             useNativeDriver: false,
         }).start();
@@ -60,19 +60,24 @@ export default class LogIn extends Component {
                         secureTextEntry
                         autoCompleteType="password"
                     />
-                    <ButtonGradient style={styles.button} text="Login" />
+                    <ButtonGradient style={styles.button} text="Iniciar" />
+                    <TouchableOpacity>
+                        <Text style={styles.text}>Registrarte</Text>
+                    </TouchableOpacity>
                 </KeyboardAvoidingView>
             </ScrollView>
         );
+
     }
 };
 
 const styles = StyleSheet.create({
     logo: {
         height: IMAGE_HEIGHT,
-        width: IMAGE_HEIGHT,
+        resizeMode: 'contain',
         marginBottom: 20,
-        marginTop: 20,
+        padding:10,
+        marginTop:20
     }, container: {
         backgroundColor: Colors.bg,
         padding: 30,
@@ -84,5 +89,10 @@ const styles = StyleSheet.create({
     }, button: {
         marginHorizontal: 50,
         marginVertical: 20,
+    }, text: {
+        color: Colors.dark,
+        textAlign: 'center',
+        fontFamily: 'galada',
+        fontSize: 25,
     }
 });

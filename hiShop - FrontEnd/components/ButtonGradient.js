@@ -5,7 +5,7 @@ import Colors from '../constants/Colors'
 
 export default function ButtonGradient(props) {
     return (
-        <TouchableOpacity activeOpacity={0.8} {...props} style={styles.button}>
+        <TouchableOpacity activeOpacity={0.5} {...props} style={styles.button}>
             <LinearGradient
                 colors={[Colors.light, Colors.dark]}
                 start={{ x: 0, y: 0 }}
@@ -28,10 +28,9 @@ const styles = StyleSheet.create({
     }, buttonGradient: {
         borderRadius: 10
     }, text: {
+        fontFamily: 'galada',
         fontSize: 25,
-        padding: 15,
-        fontWeight: '500',
-        fontStyle: 'italic',
+        padding: 10,
         color: Colors.white,
         textAlign: 'center',
     }
