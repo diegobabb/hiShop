@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Dimensions, Animated, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform, Easing } from 'react-native';
+import { View, StyleSheet, Dimensions, KeyboardAvoidingView, Animated, Platform, Easing, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import RoundedTextInput from '../components/RoundedTextInput'
 import ButtonGradient from '../components/ButtonGradient';
 import Colors from '../constants/Colors';
+
 const window = Dimensions.get('window');
 
-export default class LogIn extends Component {
+export default class SignUp extends Component {
 
-    constructor({ navigation }) {
-        super();
-        this.navigation = navigation
+    constructor(props) {
+        super(props);
+        this.state = {
+            onSubmitForm: false
+        }
         this.imageHeight = new Animated.Value(1);
+        this.dos = React.createRef();
+        this.tres = React.createRef();
+        this.cuatro = React.createRef();
         if (Platform.OS == 'ios') {
             this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
             this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
@@ -25,7 +31,7 @@ export default class LogIn extends Component {
     keyboardWillShow = (event) => {
         Animated.timing(this.imageHeight, {
             duration: event.duration,
-            toValue: 0.7,
+            toValue: 0.8,
             easing: Easing.linear,
             useNativeDriver: false,
         }).start();
@@ -44,41 +50,56 @@ export default class LogIn extends Component {
         return (
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View style={styles.container}>
+                    <Animated.Image style={{ ...styles.perfilIcon, transform: [{ scale: this.imageHeight }] }} source={require('../assets/usuario.png')} />
                     <KeyboardAvoidingView
-                        style={{ ...styles.container, marginTop: 50 }}
+                        style={styles.container}
                         behavior="padding"
+                        enabled
+                        keyboardVerticalOffset={70}
                     >
-                        <Animated.Image source={require('../assets/logo.png')} style={{ ...styles.logo, transform: [{ scale: this.imageHeight }] }} />
                         <RoundedTextInput style={styles.input}
+                            placeholder="Apodo"
+                            returnKeyType="next"
+                            onSubmitEditing={() => { this.dos.current.focus() }}
+                        />
+                        <RoundedTextInput style={styles.input}
+                            innerRef={this.dos}
+                            onSubmitEditing={() => { this.tres.current.focus() }}
                             placeholder="Email"
                             autoCompleteType="email"
                             keyboardType="email-address"
+                            returnKeyType="next"
                         />
                         <RoundedTextInput style={styles.input}
-                            placeholder="Password"
+                            innerRef={this.tres}
+                            onSubmitEditing={() => { this.cuatro.current.focus() }}
+                            placeholder="Contraseña"
                             secureTextEntry
                             autoCompleteType="password"
+                            returnKeyType="next"
                         />
-                        <ButtonGradient style={styles.button} text="Iniciar" onPress={() => this.navigation.navigate("Home")} />
-                        <TouchableOpacity onPress={() => this.navigation.navigate("SignUp")}>
-                            <Text style={styles.text}>Registrarte</Text>
-                        </TouchableOpacity>
-                    </KeyboardAvoidingView>
+                        <RoundedTextInput style={styles.input}
+                            innerRef={this.cuatro}
+                            placeholder="Repite la contraseña"
+                            secureTextEntry
+                            autoCompleteType="password"
+                            onSubmitEditing={() => { this.setState({ onSubmitForm: true }) }}
+                        />
+                        <ButtonGradient loading={this.state.onSubmitForm ? true : false} style={styles.button} text="Iniciemos" onPress={() => { this.setState({ onSubmitForm: true }) }} />
+                    </KeyboardAvoidingView >
                 </View >
             </TouchableWithoutFeedback>
         );
-
     }
 };
 
 const styles = StyleSheet.create({
-    logo: {
-        height: window.width / 2,
+    perfilIcon: {
+        height: window.width / 3,
         resizeMode: 'contain',
-        marginBottom: 10,
-        padding: 10,
-        marginTop: 50
+        marginTop: 20,
     }, container: {
+        flexDirection: 'column',
         backgroundColor: Colors.bg,
         flex: 1,
         alignItems: 'center',

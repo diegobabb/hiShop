@@ -3,16 +3,17 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import Colors from '../constants/Colors'
 import { LinearGradient } from 'expo-linear-gradient'
 
-export default function RoundedTextInput(props) {
+function RoundedTextInput({ innerRef, ...props }) {
     return (
-        <View {...props.style} style={[styles.shadow, styles.container]}>
+        <View style={[styles.shadow, styles.container, props.style]}>
             <View style={[styles.whiteShadow, styles.container]}>
                 <LinearGradient
                     colors={['white', Colors.lightgrey]}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 0 }}
                     style={styles.container}>
-                    <TextInput {...props}
+                    <TextInput {...props} ref={innerRef}
+                        blurOnSubmit={false}
                         style={styles.input} />
                 </LinearGradient>
             </View>
@@ -20,11 +21,13 @@ export default function RoundedTextInput(props) {
     );
 }
 
+
+export default React.forwardRef((props, ref) => <RoundedTextInput innerRef={ref} {...props} />);
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         borderRadius: 10,
-        width: '100%',
         shadowRadius: 10,
     }, input: {
         backgroundColor: 'transparent',

@@ -1,5 +1,6 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button } from 'react-native'
+import { StyleSheet, View, Button } from 'react-native'
+import Colors from '../constants/Colors';
 
 export default function Home({ navigation }) {
     return (
@@ -14,6 +15,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red',
+        backgroundColor: Colors.bg,
     },
 });
