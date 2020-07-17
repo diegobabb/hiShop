@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, KeyboardAvoidingView, Animated, Platform, Easing, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import React, { Component } from 'react'
+import { View, StyleSheet, KeyboardAvoidingView, Animated, Easing, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import RoundedTextInput from '../components/RoundedTextInput'
-import ButtonGradient from '../components/ButtonGradient';
-import Colors from '../constants/Colors';
-
-const window = Dimensions.get('window');
+import ButtonGradient from '../components/ButtonGradient'
+import { Colors, Size } from '../constants/Constants'
 
 export default class SignUp extends Component {
 
@@ -17,10 +15,8 @@ export default class SignUp extends Component {
         this.dos = React.createRef();
         this.tres = React.createRef();
         this.cuatro = React.createRef();
-        if (Platform.OS == 'ios') {
-            this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-            this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
-        }
+        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
     }
 
     componentWillUnmount() {
@@ -83,7 +79,10 @@ export default class SignUp extends Component {
                             placeholder="Repite la contraseña"
                             secureTextEntry
                             autoCompleteType="password"
-                            onSubmitEditing={() => { this.setState({ onSubmitForm: true }) }}
+                            onSubmitEditing={() => {
+                                Keyboard.dismiss()
+                                this.setState({ onSubmitForm: true })
+                            }}
                         />
                         <ButtonGradient loading={this.state.onSubmitForm ? true : false} style={styles.button} text="Iniciemos" onPress={() => { this.setState({ onSubmitForm: true }) }} />
                     </KeyboardAvoidingView >
@@ -95,7 +94,7 @@ export default class SignUp extends Component {
 
 const styles = StyleSheet.create({
     perfilIcon: {
-        height: window.width / 3,
+        height: Size.width / 3,
         resizeMode: 'contain',
         marginTop: 20,
     }, container: {
@@ -105,10 +104,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     }, input: {
-        width: window.width - 65,
+        width: Size.width - 65,
         marginVertical: 10,
     }, button: {
-        width: window.width - 120,
+        width: Size.width - 120,
         marginVertical: 20,
     }, text: {
         color: Colors.dark,

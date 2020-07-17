@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         borderRadius: 10,
-        shadowRadius: 10,
+        shadowRadius: 5,
     }, input: {
         backgroundColor: 'transparent',
         fontSize: 25,

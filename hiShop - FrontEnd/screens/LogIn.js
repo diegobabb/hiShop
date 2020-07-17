@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Dimensions, Animated, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Platform, Easing } from 'react-native';
-import RoundedTextInput from '../components/RoundedTextInput'
-import ButtonGradient from '../components/ButtonGradient';
-import Colors from '../constants/Colors';
-const window = Dimensions.get('window');
+import { View, StyleSheet, Animated, Keyboard, TouchableWithoutFeedback, KeyboardAvoidingView, Easing } from 'react-native';
+import { RoundedTextInput, ButtonGradient, ButtonText } from '../components/Components'
+import { Colors, Size } from '../constants/Constants';
 
 export default class LogIn extends Component {
 
@@ -11,10 +9,8 @@ export default class LogIn extends Component {
         super();
         this.navigation = navigation
         this.imageHeight = new Animated.Value(1);
-        if (Platform.OS == 'ios') {
-            this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
-            this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
-        }
+        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow);
+        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide);
     }
 
     componentWillUnmount() {
@@ -27,18 +23,27 @@ export default class LogIn extends Component {
             duration: event.duration,
             toValue: 0.7,
             easing: Easing.linear,
-            useNativeDriver: false,
+            useNativeDriver: true,
         }).start();
-    };
+    }
 
     keyboardWillHide = (event) => {
         Animated.timing(this.imageHeight, {
             duration: event.duration,
             toValue: 1,
             easing: Easing.linear,
-            useNativeDriver: false,
+            useNativeDriver: true,
         }).start();
-    };
+    }
+
+    login() {
+        this.navigation.reset({
+            index: 0,
+            routes: [
+                { name: 'Home' },
+            ],
+        })
+    }
 
     render() {
         return (
@@ -59,10 +64,8 @@ export default class LogIn extends Component {
                             secureTextEntry
                             autoCompleteType="password"
                         />
-                        <ButtonGradient style={styles.button} text="Iniciar" onPress={() => this.navigation.navigate("Home")} />
-                        <TouchableOpacity onPress={() => this.navigation.navigate("SignUp")}>
-                            <Text style={styles.text}>Registrarte</Text>
-                        </TouchableOpacity>
+                        <ButtonGradient style={styles.button} text="Iniciar" onPress={() => this.login()} />
+                        <ButtonText textStyle={styles.textRegistrar} text='Registrarte' onPress={() => this.navigation.navigate("SignUp")} />
                     </KeyboardAvoidingView>
                 </View >
             </TouchableWithoutFeedback>
@@ -73,7 +76,7 @@ export default class LogIn extends Component {
 
 const styles = StyleSheet.create({
     logo: {
-        height: window.width / 2,
+        height: Size.width / 2,
         resizeMode: 'contain',
         marginBottom: 10,
         padding: 10,
@@ -84,15 +87,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     }, input: {
-        width: window.width - 65,
+        width: Size.width - 65,
         marginVertical: 10,
     }, button: {
-        width: window.width - 120,
+        width: Size.width - 120,
         marginVertical: 20,
-    }, text: {
-        color: Colors.dark,
-        textAlign: 'center',
-        fontFamily: 'galada',
+    }, textRegistrar: {
         fontSize: 25,
     }
 });

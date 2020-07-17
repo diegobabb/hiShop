@@ -2,15 +2,12 @@ import { StyleSheet, View, Text, StatusBar } from 'react-native';
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import Home from './screens/Home'
-import Profile from './screens/Profile'
-import LogIn from './screens/LogIn';
+import { Home, Profile, LogIn, DetailScreen, SignUp } from './screens/Screens'
 import * as Font from 'expo-font';
-import SignUp from './screens/SignUp';
-import Colors from './constants/Colors';
+import { Colors } from './constants/Constants';
+import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 
-const Stack = createStackNavigator();
+const Stack = createSharedElementStackNavigator();
 
 export default class App extends Component {
 
@@ -36,17 +33,43 @@ export default class App extends Component {
 		if (this.state.fontLoaded)
 			return (
 				<NavigationContainer>
-					<StatusBar style="dark"/>
+					<StatusBar style="dark" />
 					<Stack.Navigator initialRouteName="LogIn" screenOptions={{
-						headerTransparent: true,
 						headerTintColor: Colors.dark,
 						headerTitleStyle: styles.headerTitleStyle,
 						headerStyle: styles.headerStyle,
 					}}>
-						<Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
-						<Stack.Screen name="SignUp" component={SignUp} options={{ headerTransparent: false }} />
-						<Stack.Screen name="Home" component={Home} />
+						<Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false, headerTransparent: true }} />
+						<Stack.Screen name="SignUp" component={SignUp} />
+						<Stack.Screen name="Home" component={Home} options={{ headerLeft: false }} />
 						<Stack.Screen name="Profile" component={Profile} />
+						<Stack.Screen name="DetailScreen" component={DetailScreen} options={{
+							headerTransparent: true,
+							headerTitle: null,
+							cardStyleInterpolator: ({ current: { progress } }) => {
+								return {
+									cardStyle: {
+										opacity: progress
+									}
+								}
+							}
+						}}
+							sharedElementsConfig={(route) => {
+								const { item } = route.params
+								return [
+									{
+										id: `item.${item.id}.photo`,
+										animation: 'move',
+										resize: 'clip',
+										align: 'center-top'
+									}, {
+										id: `item.${item.id}.title`,
+										animation: 'fade',
+										resize: 'clip',
+										align: 'left-center'
+									},
+								]
+							}} />
 					</Stack.Navigator>
 				</NavigationContainer>
 			)
